@@ -51,18 +51,20 @@ pipeline {
             }
         }
 
+          # Maven pipeline Integration (install this tool to create pipeline syntax)
          stage('Deploy To Nexus') {
             steps {
-                withMaven(globalMavenSettingsConfig: 'global-settings-xml') {  # Maven pipeline Integration ( install this tool to create pipeline syntax )
+                withMaven(globalMavenSettingsConfig: 'global-settings-xml') { 
                 sh "mvn deploy -DskipTests=true"
                 }
             }
         }
-        
+
+       # withdockerRegistry (select this option in pipeline syntax)
        stage('Build & Tag Docker Image') {
             steps {
                 script{
-                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') { # withdockerRegistry (select this option in pipeline syntax)
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                         sh "docker build -t shopping-cart -f docker/Dockerfile ."
                         sh "docker tag  shopping-cart kubegourav/shopping-cart:latest"
                     }
