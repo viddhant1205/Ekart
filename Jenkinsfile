@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools{
-        jdk  'jdk11'
+        jdk  'jdk17'
         maven  'maven3'
     }
     
@@ -24,7 +24,7 @@ pipeline {
         
         stage('OWASP Scan') {
             steps {
-                dependencyCheck additionalArguments: '--scan ./ ', odcInstallation: 'DP'
+                dependencyCheck additionalArguments: '--scan ./ ', odcInstallation: 'DC'
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
         }
