@@ -81,7 +81,18 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy Application') {
+            steps {
+                script{
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                        sh "docker run -d --name= Ekart -p 8070:8070 kubegourav/shopping-cart:latest"
+                    }
+                }
+            }
+        }
+
         
-        
+        }   
     }
-}
+
