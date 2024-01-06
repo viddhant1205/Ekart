@@ -72,7 +72,7 @@ pipeline {
             }
         }
 
-       stage('Build & Tag Docker Image') {
+       stage('Push Docker Image') {
             steps {
                 script{
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
