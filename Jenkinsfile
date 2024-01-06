@@ -21,6 +21,12 @@ pipeline {
                 sh "mvn clean compile -DskipTests=true"
             }
         }
+
+         stage('Trivy FS Scan') {
+            steps {
+                sh "trivy fs ."
+            }
+        }
         
         stage('OWASP Scan') {
             steps {
@@ -42,6 +48,14 @@ pipeline {
         stage('Build') {
             steps {
                 sh "mvn clean package -DskipTests=true"
+            }
+        }
+
+         stage('Deploy To Nexus') {
+            steps {
+                withMaven(globalMavenSettingsConfig: 'global-settings-xml') {
+                sh "mvn deploy -DskipTests=true"
+                }
             }
         }
         
