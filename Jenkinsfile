@@ -60,15 +60,20 @@ pipeline {
             }
         }
 
-       # withdockerRegistry (select this option in pipeline syntax)
+       
        stage('Build & Tag Docker Image') {
             steps {
                 script{
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
-                        sh "docker build -t shopping-cart -f docker/Dockerfile ."
-                        sh "docker tag  shopping-cart kubegourav/shopping-cart:latest"
+                        sh "docker build -t kubegourav/shopping-cart:latest -f docker/Dockerfile ."
                     }
                 }
+            }
+        }
+
+        stage('Trivy FS Scan') {
+            steps {
+                sh "trivy image kubegourav/shopping-cart:latest > trivy-report.txt"
             }
         }
 
